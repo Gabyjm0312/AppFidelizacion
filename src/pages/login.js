@@ -26,7 +26,7 @@ export default function LoginPage() {
                   <div className="h-100 p-5 bg-light d-flex flex-column rounded-end-3">
                     <Link href="/" className="mb-4 d-inline-block">
                       <Image
-                        src="/images/logo/logo-dark.svg"
+                        src="/images/logo/logo.png"
                         alt="Logo"
                         width={176}
                         height={32}
@@ -49,7 +49,7 @@ export default function LoginPage() {
 
                     <div className="mt-auto text-center">
                       <Image
-                        src="/images/grids/grid-02.svg"
+                        src="/images/decoracion/decoracion.png"
                         alt="Decoración"
                         width={405}
                         height={325}

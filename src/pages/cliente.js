@@ -1,9 +1,36 @@
 import { useState } from 'react'
 import { QRCodeCanvas } from 'qrcode.react'
-import { supabase } from '../../lib/supabaseClient'
-import { logout } from '../../lib/routeGuard'
+import { supabase } from '@/lib/supabaseClient'
+import { logout } from '@/lib/routeGuard'
+import CardPerfil from "@/src/componentes/profile/CardPerfil";
 
 export default function HomeCliente() {
+
+ const [perfilData, setperfilData] = useState({
+  name: "Monkey D. Luffy",
+  profilePhoto: "/images/user/Luffy.png",
+  coverPhoto: "/images/cover/cover-01.png",
+});
+
+const handlePerfilChange = (e) => {
+  const { name, files, value } = e.target;
+
+  if (name === "profilePhoto" || name === "coverPhoto") {
+    const file = files?.[0];
+
+    setperfilData((prev) => ({
+      ...prev,
+      [name]: file ? URL.createObjectURL(file) : prev[name],
+    }));
+  } else {
+    setperfilData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
+};
+
+
   const [saldoCli, setSaldoCli] = useState(null)
   const [numeroCliente, setNumeroCliente] = useState(null)
   const [log, setLog] = useState('')
@@ -44,30 +71,33 @@ export default function HomeCliente() {
   }
 
   return (
-    <div className="container py-4" style={{maxWidth: 520}}>
+    <CardPerfil data={perfilData} handleChange={handlePerfilChange}>
+    <div className="mt-4">
       <h3 className="mb-3">Mis puntos</h3>
 
       <button className="btn btn-dark" onClick={verMisPuntos}>Ver mis puntos</button>
-      {saldoCli !== null && <div className="mt-3">Saldo (cliente): <b>{saldoCli}</b></div>}
+      {saldoCli !== null && <div className="mt-3">Saldo: <b>{saldoCli}</b></div>}
       
       {numeroCliente !== null && (
         <div className="mt-4 text-center">
           <p className="text-muted">Mi código QR</p>
           <QRCodeCanvas value={String(numeroCliente)} size={256} level="H" />
-          <p className="mt-2 text-muted small">Cliente #: {numeroCliente}</p>
+          <p className="mt-2 text-muted small">Cliente: {numeroCliente}</p>
         </div>
       )}
 
-      <div className="card mt-4">
+    {/*   <div className="card mt-4">
         <div className="card-body">
           <h6 className="card-title">Log</h6>
           <pre style={{ whiteSpace: 'pre-wrap' }}>{log}</pre>
         </div>
-      </div>
-
+      </div> */}
+  <div>
       <button className="btn btn-outline-danger mt-3" onClick={logout}>
         Cerrar sesión
       </button>
+      </div>
     </div>
+    </CardPerfil>
   )
 }
